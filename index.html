@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kallr ROI Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 450px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
+    .calculator {
+      background: #fff;
+      border: 2px solid #01F5F2;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    label {
+      margin-top: 10px;
+      display: block;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #01F5F2;
+      color: black;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .results {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .results span {
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Kallr ROI Calculator</h2>
+
+    <label for="missed">Missed Calls per Month:</label>
+    <input type="number" id="missed" placeholder="e.g. 20" />
+
+    <label for="close">Close Rate (%):</label>
+    <input type="number" id="close" placeholder="e.g. 30" />
+
+    <label for="value">Average Sale Value ($):</label>
+    <input type="number" id="value" placeholder="e.g. 250" />
+
+    <button onclick="calculate()">Calculate ROI</button>
+
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      const missed = parseFloat(document.getElementById("missed").value) || 0;
+      const closeRate = parseFloat(document.getElementById("close").value) || 0;
+      const value = parseFloat(document.getElementById("value").value) || 0;
+      const kallrFee = 497;
+
+      const closedDeals = missed * (closeRate / 100);
+      const lostRevenue = closedDeals * value;
+      const net = lostRevenue - kallrFee;
+
+      document.getElementById("results").innerHTML = `
+        <span>Potential Monthly Revenue from Missed Calls: <strong>$${lostRevenue.toFixed(2)}</strong></span>
+        <span>Kallr Monthly Cost: <strong>$${kallrFee.toFixed(2)}</strong></span>
+        <span style="color: green;">Your Net Monthly Gain Using Kallr: <strong>$${net.toFixed(2)}</strong></span>
+      `;
+    }
+  </script>
+</body>
+</html>
